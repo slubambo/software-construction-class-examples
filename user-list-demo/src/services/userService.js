@@ -7,8 +7,11 @@ export async function fetchUsers() {
   return response.data;
 }
 
-export async function deleteUser(userId) {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(), 500); // Simulate an API call delay
-  });
+export async function addUser(user) {
+  const response = await axios.post(API_URL, user);
+  return response.data;
+}
+
+export async function deleteUser(id) {
+  return axios.delete(`${API_URL}/${id}`);
 }

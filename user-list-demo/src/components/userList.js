@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useUsers from "../hooks/useUsers";
+import useUsers from "../hooks/useFetchUsers";
 
 function UserList() {
   const { users, loading, error, handleAddUser, handleDeleteUser } = useUsers();

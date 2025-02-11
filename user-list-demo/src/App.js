@@ -4,7 +4,7 @@ import UserList from "./components/userList";
 function App() {
   return (
     <div className="App">
-      <h1>React User Management</h1>
+      <h1>Software Construction Class User Management</h1>
       <UserList />
     </div>
   );

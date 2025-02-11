@@ -1,27 +1,15 @@
-import React, { useState, useEffect } from "react";
-import useFetchUsers from "../hooks/useFetchUsers";
-import { deleteUser } from "../services/userService";
-import axios from "axios";
+import React, { useState } from "react";
+import useUsers from "../hooks/useUsers";
 
 function UserList() {
-
-  const { users, loading, error, setUsers } = useFetchUsers();
+  const { users, loading, error, handleAddUser, handleDeleteUser } = useUsers();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
-  const addUser = () => {
-    axios.post("https://jsonplaceholder.typicode.com/users", { name, email })
-      .then(response => setUsers([...users, response.data]))
-      .catch(error => console.error("Error adding user", error));
-  };
-
-  const handleDeleteUser = async (userId) => {
-    try {
-      await deleteUser(userId);
-      setUsers(users.filter(user => user.id !== userId));
-    } catch {
-      alert("Error deleting user");
-    }
+  const handleSubmit = () => {
+    handleAddUser({ name, email });
+    setName("");
+    setEmail("");
   };
 
   if (loading) return <p>Loading...</p>;
@@ -30,15 +18,14 @@ function UserList() {
   return (
     <div>
       <h2>User List</h2>
-
-      <input placeholder="Name" onChange={e => setName(e.target.value)} />
-      <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
-      <button onClick={addUser}>Add User</button>
+      <input value={name} placeholder="Name" onChange={e => setName(e.target.value)} />
+      <input value={email} placeholder="Email" onChange={e => setEmail(e.target.value)} />
+      <button onClick={handleSubmit}>Add User</button>
 
       <ul>
         {users.map(user => (
           <li key={user.id}>
-            {user.name} <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
+            {user.name} ({user.email}) <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
           </li>
         ))}
       </ul>

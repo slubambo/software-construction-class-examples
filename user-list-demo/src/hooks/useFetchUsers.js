@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchUsers } from "../services/userService";
+import { fetchUsers, addUser, deleteUser } from "../services/userService";
 
 export default function useFetchUsers() {
   const [users, setUsers] = useState([]);
@@ -18,5 +18,23 @@ export default function useFetchUsers() {
       });
   }, []);
 
-  return { users, loading, error, setUsers };
+  const handleAddUser = async (user) => {
+    try {
+      const newUser = await addUser(user);
+      setUsers([...users, newUser]);
+    } catch {
+      setError("Error adding user");
+    }
+  };
+
+  const handleDeleteUser = async (id) => {
+    try {
+      await deleteUser(id);
+      setUsers(users.filter(user => user.id !== id));
+    } catch {
+      setError("Error deleting user");
+    }
+  };
+
+  return { users, loading, error, setUsers, handleAddUser, handleDeleteUser };
 }
